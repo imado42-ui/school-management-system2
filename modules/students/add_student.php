@@ -3,22 +3,20 @@ require_once "../../config/database.php";
 require_once "../../includes/auth.php";
 require_once "../../includes/header.php";
 
-$classes = $pdo->query("SELECT * FROM classes ORDER BY class_name")->fetchAll(PDO::FETCH_ASSOC);
-
 if(isset($_POST['save'])){
 
-    $firstname = $_POST['firstname'];
-    $lastname = $_POST['lastname'];
-    $gender = $_POST['gender'];
+    $firstname = trim($_POST['firstname']);
+    $lastname  = trim($_POST['lastname']);
+    $gender    = $_POST['gender'];
     $birthdate = $_POST['birthdate'];
-    $class = $_POST['class'];
-    $phone = $_POST['phone'];
-    $address = $_POST['address'];
+    $class_id  = $_POST['class_id'];
+    $phone     = trim($_POST['phone']);
+    $address   = trim($_POST['address']);
 
     $stmt = $pdo->prepare("
         INSERT INTO students
-        (firstname, lastname, gender, birthdate, class, phone, address)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        (firstname, lastname, gender, birthdate, class_id, phone, address)
+        VALUES (?,?,?,?,?,?,?)
     ");
 
     $stmt->execute([
@@ -26,7 +24,7 @@ if(isset($_POST['save'])){
         $lastname,
         $gender,
         $birthdate,
-        $class,
+        $class_id,
         $phone,
         $address
     ]);
@@ -34,6 +32,8 @@ if(isset($_POST['save'])){
     header("Location: students.php");
     exit;
 }
+
+$classes = $pdo->query("SELECT * FROM classes ORDER BY class_name")->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <h2>إضافة تلميذ</h2>
@@ -56,20 +56,19 @@ if(isset($_POST['save'])){
 <input type="date" name="birthdate">
 
 <p>القسم</p>
-<select name="class" required>
-    <option value="">اختر القسم</option>
+<select name="class_id" required>
 
-    <?php foreach($classes as $row): ?>
+<?php foreach($classes as $class): ?>
 
-        <option value="<?= $row['class_name']; ?>">
-            <?= $row['class_name']; ?> - <?= $row['level']; ?>
-        </option>
+<option value="<?= $class['id']; ?>">
+    <?= htmlspecialchars($class['class_name']); ?>
+</option>
 
-    <?php endforeach; ?>
+<?php endforeach; ?>
 
 </select>
 
-<p>رقم الهاتف</p>
+<p>الهاتف</p>
 <input type="text" name="phone">
 
 <p>العنوان</p>
@@ -78,7 +77,7 @@ if(isset($_POST['save'])){
 <br><br>
 
 <button type="submit" name="save">
-💾 حفظ التلميذ
+حفظ
 </button>
 
 </form>
