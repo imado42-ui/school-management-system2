@@ -1,77 +1,66 @@
 <?php
 session_start();
+require_once "config/database.php";
 
-if (isset($_SESSION['user_id'])) {
+if(isset($_SESSION['user_id'])){
     header("Location: dashboard.php");
-    exit;
+    exit();
+}
+
+$error = "";
+
+if(isset($_POST['login'])){
+
+    $username = trim($_POST['username']);
+    $password = trim($_POST['password']);
+
+    if(empty($username) || empty($password)){
+        $error = "يرجى إدخال اسم المستخدم وكلمة المرور.";
+    }else{
+
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
+        $stmt->execute([$username]);
+        $user = $stmt->fetch();
+
+        if($user && password_verify($password,$user['password'])){
+
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['username'] = $user['username'];
+
+            header("Location: dashboard.php");
+            exit();
+
+        }else{
+            $error = "بيانات الدخول غير صحيحة.";
+        }
+    }
 }
 ?>
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<title>تسجيل الدخول - نظام إدارة المدرسة</title>
 
-<style>
-body{
-    margin:0;
-    font-family:Tahoma;
-    background:#f2f5f9;
-}
-.login-box{
-    width:350px;
-    margin:80px auto;
-    background:#fff;
-    padding:25px;
-    border-radius:10px;
-    box-shadow:0 0 15px rgba(0,0,0,.15);
-}
-h2{
-    text-align:center;
-    color:#0d6efd;
-}
-input{
-    width:100%;
-    padding:12px;
-    margin:10px 0;
-    border:1px solid #ccc;
-    border-radius:6px;
-    box-sizing:border-box;
-}
-button{
-    width:100%;
-    padding:12px;
-    background:#0d6efd;
-    color:#fff;
-    border:none;
-    border-radius:6px;
-    font-size:16px;
-    cursor:pointer;
-}
-button:hover{
-    background:#0b5ed7;
-}
-</style>
-
-</head>
-
-<body>
+<?php include "includes/header.php"; ?>
 
 <div class="login-box">
 
-<h2>نظام إدارة المدرسة</h2>
+    <h2>تسجيل الدخول</h2>
 
-<form action="" method="post">
+    <?php if($error!=""){ ?>
+        <p style="color:red;"><?php echo $error; ?></p>
+    <?php } ?>
 
-<input type="text" name="username" placeholder="اسم المستخدم">
+    <form method="post">
 
-<input type="password" name="password" placeholder="كلمة المرور">
+        <input type="text" name="username" placeholder="اسم المستخدم" required>
 
-<button type="submit">تسجيل الدخول</button>
+        <br><br>
 
-</form>
+        <input type="password" name="password" placeholder="كلمة المرور" required>
+
+        <br><br>
+
+        <button type="submit" name="login">دخول</button>
+
+    </form>
 
 </div>
 
-</body>
-</html>
+<?php include "includes/footer.php"; ?>
