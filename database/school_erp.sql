@@ -1,3 +1,12 @@
+CREATE DATABASE IF NOT EXISTS school_erp
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_unicode_ci;
+
+USE school_erp;
+
+-- ==========================
+-- جدول المستخدمين
+-- ==========================
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
@@ -7,6 +16,9 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- ==========================
+-- جدول الأقسام
+-- ==========================
 CREATE TABLE classes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     class_name VARCHAR(100) NOT NULL,
@@ -14,6 +26,9 @@ CREATE TABLE classes (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- ==========================
+-- جدول التلاميذ
+-- ==========================
 CREATE TABLE students (
     id INT AUTO_INCREMENT PRIMARY KEY,
     firstname VARCHAR(100) NOT NULL,
@@ -26,53 +41,15 @@ CREATE TABLE students (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT fk_student_class
-        FOREIGN KEY (class_id)
-        REFERENCES classes(id)
-        ON UPDATE CASCADE
-        ON DELETE RESTRICT
+    FOREIGN KEY (class_id)
+    REFERENCES classes(id)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE
 );
 
+-- ==========================
+-- جدول الأساتذة
+-- ==========================
 CREATE TABLE teachers (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    full_name VARCHAR(150) NOT NULL,
-    specialty VARCHAR(150) NOT NULL,
-    phone VARCHAR(30),
-    email VARCHAR(150),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE subjects (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    subject_name VARCHAR(150) NOT NULL,
-    coefficient INT DEFAULT 1,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE marks (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-
-    student_id INT NOT NULL,
-    subject_id INT NOT NULL,
-
-    semester ENUM(
-        'الفصل الأول',
-        'الفصل الثاني',
-        'الفصل الثالث'
-    ) NOT NULL,
-
-    mark DECIMAL(4,2) NOT NULL,
-
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT fk_marks_student
-        FOREIGN KEY (student_id)
-        REFERENCES students(id)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE,
-
-    CONSTRAINT fk_marks_subject
-        FOREIGN KEY (subject_id)
-        REFERENCES subjects(id)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
-);
+    full_name VARCHAR(150
