@@ -10,67 +10,84 @@ $subjects = $pdo->query("SELECT COUNT(*) FROM subjects")->fetchColumn();
 $marks    = $pdo->query("SELECT COUNT(*) FROM marks")->fetchColumn();
 ?>
 
-<h1>لوحة التحكم</h1>
+<h2 class="mb-4">لوحة التحكم</h2>
 
-<table border="1" cellpadding="15" cellspacing="0" width="100%">
+<div class="row">
 
-<tr>
-
-<td align="center">
+<div class="col-md-4 mb-3">
+<div class="card text-bg-primary">
+<div class="card-body">
+<h5>التلاميذ</h5>
 <h2><?= $students ?></h2>
-عدد التلاميذ
-</td>
+</div>
+</div>
+</div>
 
-<td align="center">
+<div class="col-md-4 mb-3">
+<div class="card text-bg-success">
+<div class="card-body">
+<h5>الأساتذة</h5>
 <h2><?= $teachers ?></h2>
-عدد الأساتذة
-</td>
+</div>
+</div>
+</div>
 
-<td align="center">
+<div class="col-md-4 mb-3">
+<div class="card text-bg-warning">
+<div class="card-body">
+<h5>الأقسام</h5>
 <h2><?= $classes ?></h2>
-عدد الأقسام
-</td>
+</div>
+</div>
+</div>
 
-</tr>
-
-<tr>
-
-<td align="center">
+<div class="col-md-4 mb-3">
+<div class="card text-bg-info">
+<div class="card-body">
+<h5>المواد</h5>
 <h2><?= $subjects ?></h2>
-عدد المواد
-</td>
+</div>
+</div>
+</div>
 
-<td align="center">
+<div class="col-md-4 mb-3">
+<div class="card text-bg-danger">
+<div class="card-body">
+<h5>العلامات</h5>
 <h2><?= $marks ?></h2>
-عدد العلامات
-</td>
+</div>
+</div>
+</div>
 
-<td align="center">
-<h2><?= date("Y") ?></h2>
-السنة الدراسية
-</td>
+</div>
 
-</tr>
+<hr>
 
-</table>
+<h3>الوصول السريع</h3>
 
-<br><br>
+<div class="list-group">
 
-<h2>القائمة السريعة</h2>
+<a class="list-group-item list-group-item-action" href="modules/students/students.php">
+👨‍🎓 إدارة التلاميذ
+</a>
 
-<ul>
+<a class="list-group-item list-group-item-action" href="modules/classes/classes.php">
+🏫 إدارة الأقسام
+</a>
 
-<li><a href="modules/students/students.php">👨‍🎓 إدارة التلاميذ</a></li>
+<a class="list-group-item list-group-item-action" href="modules/teachers/teachers.php">
+👨‍🏫 إدارة الأساتذة
+</a>
 
-<li><a href="modules/classes/classes.php">🏫 إدارة الأقسام</a></li>
+<a class="list-group-item list-group-item-action" href="modules/subjects/subjects.php">
+📚 إدارة المواد
+</a>
 
-<li><a href="modules/teachers/teachers.php">👨‍🏫 إدارة الأساتذة</a></li>
+<a class="list-group-item list-group-item-action" href="modules/marks/marks.php">
+📝 إدارة العلامات
+</a>
 
-<li><a href="modules/subjects/subjects.php">📚 إدارة المواد</a></li>
-
-<li><a href="modules/marks/marks.php">📝 إدارة العلامات</a></li>
-
-</ul>
+</div>
 
 <?php
 require_once "includes/footer.php";
