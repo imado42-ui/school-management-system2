@@ -1,49 +1,43 @@
 <?php
-session_start();
 require_once "../../config/database.php";
 require_once "../../includes/auth.php";
 require_once "../../includes/header.php";
-require_once "../../includes/sidebar.php";
+
+$stmt = $pdo->query("SELECT * FROM students ORDER BY id DESC");
+$students = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<div style="margin-left:270px;padding:20px;">
-
-<h2>إدارة التلاميذ</h2>
+<h2>قائمة التلاميذ</h2>
 
 <p>
     <a href="add_student.php">➕ إضافة تلميذ جديد</a>
 </p>
 
-<table border="1" cellpadding="10" cellspacing="0" width="100%">
-    <tr>
-        <th>رقم</th>
-        <th>الاسم</th>
-        <th>اللقب</th>
-        <th>القسم</th>
-        <th>العمليات</th>
-    </tr>
+<table border="1" cellpadding="8" cellspacing="0">
 
-<?php
+<tr>
+    <th>#</th>
+    <th>الاسم</th>
+    <th>اللقب</th>
+    <th>الجنس</th>
+    <th>القسم</th>
+    <th>الهاتف</th>
+</tr>
 
-$stmt = $pdo->query("SELECT * FROM students");
+<?php foreach($students as $student): ?>
 
-while($row = $stmt->fetch()){
+<tr>
+    <td><?= $student['id']; ?></td>
+    <td><?= $student['firstname']; ?></td>
+    <td><?= $student['lastname']; ?></td>
+    <td><?= $student['gender']; ?></td>
+    <td><?= $student['class']; ?></td>
+    <td><?= $student['phone']; ?></td>
+</tr>
 
-    echo "<tr>";
-    echo "<td>".$row['registration_number']."</td>";
-    echo "<td>".$row['first_name']."</td>";
-    echo "<td>".$row['last_name']."</td>";
-    echo "<td>".$row['class_id']."</td>";
-    echo "<td>تعديل | حذف</td>";
-    echo "</tr>";
-
-}
-
-?>
+<?php endforeach; ?>
 
 </table>
-
-</div>
 
 <?php
 require_once "../../includes/footer.php";
