@@ -1,37 +1,77 @@
 <?php
-session_start();
+require_once "config/database.php";
+require_once "includes/auth.php";
+require_once "includes/header.php";
 
-if (!isset($_SESSION["user"])) {
-    header("Location: login.php");
-    exit;
-}
+$students = $pdo->query("SELECT COUNT(*) FROM students")->fetchColumn();
+$teachers = $pdo->query("SELECT COUNT(*) FROM teachers")->fetchColumn();
+$classes  = $pdo->query("SELECT COUNT(*) FROM classes")->fetchColumn();
+$subjects = $pdo->query("SELECT COUNT(*) FROM subjects")->fetchColumn();
+$marks    = $pdo->query("SELECT COUNT(*) FROM marks")->fetchColumn();
 ?>
 
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<title>لوحة التحكم</title>
-</head>
+<h1>لوحة التحكم</h1>
 
-<body>
+<table border="1" cellpadding="15" cellspacing="0" width="100%">
 
-<h1>مرحبًا <?php echo $_SESSION["user"]["fullname"]; ?></h1>
+<tr>
 
-<p>أهلاً بك في نظام إدارة المدرسة.</p>
+<td align="center">
+<h2><?= $students ?></h2>
+عدد التلاميذ
+</td>
+
+<td align="center">
+<h2><?= $teachers ?></h2>
+عدد الأساتذة
+</td>
+
+<td align="center">
+<h2><?= $classes ?></h2>
+عدد الأقسام
+</td>
+
+</tr>
+
+<tr>
+
+<td align="center">
+<h2><?= $subjects ?></h2>
+عدد المواد
+</td>
+
+<td align="center">
+<h2><?= $marks ?></h2>
+عدد العلامات
+</td>
+
+<td align="center">
+<h2><?= date("Y") ?></h2>
+السنة الدراسية
+</td>
+
+</tr>
+
+</table>
+
+<br><br>
+
+<h2>القائمة السريعة</h2>
 
 <ul>
-    <li><a href="modules/students/students.php">إدارة التلاميذ</a></li>
-    <li><a href="modules/teachers/teachers.php">إدارة الأساتذة</a></li>
-    <li><a href="modules/classes/classes.php">الأقسام</a></li>
-    <li><a href="modules/subjects/subjects.php">المواد</a></li>
-    <li><a href="modules/attendance/attendance.php">الحضور</a></li>
-    <li><a href="modules/grades/grades.php">العلامات</a></li>
-    <li><a href="modules/exams/exams.php">الامتحانات</a></li>
-    <li><a href="modules/reports/reports.php">التقارير</a></li>
-    <li><a href="modules/fees/fees.php">الرسوم</a></li>
-    <li><a href="logout.php">تسجيل الخروج</a></li>
+
+<li><a href="modules/students/students.php">👨‍🎓 إدارة التلاميذ</a></li>
+
+<li><a href="modules/classes/classes.php">🏫 إدارة الأقسام</a></li>
+
+<li><a href="modules/teachers/teachers.php">👨‍🏫 إدارة الأساتذة</a></li>
+
+<li><a href="modules/subjects/subjects.php">📚 إدارة المواد</a></li>
+
+<li><a href="modules/marks/marks.php">📝 إدارة العلامات</a></li>
+
 </ul>
 
-</body>
-</html>
+<?php
+require_once "includes/footer.php";
+?>
