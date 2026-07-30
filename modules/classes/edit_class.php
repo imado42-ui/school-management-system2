@@ -3,19 +3,14 @@ require_once "../../config/database.php";
 require_once "../../includes/auth.php";
 require_once "../../includes/header.php";
 
-if (!isset($_GET['id'])) {
-    header("Location: classes.php");
-    exit;
-}
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
-$id = (int)$_GET['id'];
-
-$stmt = $pdo->prepare("SELECT * FROM classes WHERE id=?");
+$stmt = $pdo->prepare("SELECT * FROM classes WHERE id = ?");
 $stmt->execute([$id]);
-$class = $stmt->fetch(PDO::FETCH_ASSOC);
+$class = $stmt->fetch();
 
 if (!$class) {
-    die("القسم غير موجود.");
+    die("القسم غير موجود");
 }
 
 if (isset($_POST['update'])) {
@@ -23,31 +18,53 @@ if (isset($_POST['update'])) {
     $class_name = trim($_POST['class_name']);
     $level = trim($_POST['level']);
 
-    $stmt = $pdo->prepare("UPDATE classes SET class_name=?, level=? WHERE id=?");
-    $stmt->execute([$class_name, $level, $id]);
+    if (!empty($class_name) && !empty($level)) {
 
-    header("Location: classes.php");
-    exit;
+        $stmt = $pdo->prepare("
+            UPDATE classes
+            SET class_name = ?, level = ?
+            WHERE id = ?
+        ");
+
+        $stmt->execute([
+            $class_name,
+            $level,
+            $id
+        ]);
+
+        header("Location: classes.php");
+        exit;
+    }
 }
 ?>
 
-<h2>تعديل القسم</h2>
+<h2>✏️ تعديل القسم</h2>
 
-<form method="post">
+<form method="POST">
 
-<p>اسم القسم</p>
-<input type="text" name="class_name"
-value="<?= htmlspecialchars($class['class_name']) ?>" required>
+    <p>اسم القسم</p>
+    <input
+        type="text"
+        name="class_name"
+        value="<?= htmlspecialchars($class['class_name']) ?>"
+        required
+    >
 
-<p>المستوى</p>
-<input type="text" name="level"
-value="<?= htmlspecialchars($class['level']) ?>">
+    <br><br>
 
-<br><br>
+    <p>المستوى</p>
+    <input
+        type="text"
+        name="level"
+        value="<?= htmlspecialchars($class['level']) ?>"
+        required
+    >
 
-<button type="submit" name="update">
-💾 حفظ التعديلات
-</button>
+    <br><br>
+
+    <button type="submit" name="update">
+        💾 حفظ التعديلات
+    </button>
 
 </form>
 
