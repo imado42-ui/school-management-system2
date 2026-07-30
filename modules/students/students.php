@@ -35,8 +35,13 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <td><?= $student['class']; ?></td>
     <td><?= $student['phone']; ?></td>
     <td>
-        <a href="edit_student.php?id=<?= $student['id']; ?>">✏️ تعديل</a>
-    </td>
+    <a href="edit_student.php?id=<?= $student['id']; ?>">✏️ تعديل</a>
+    |
+    <a href="delete_student.php?id=<?= $student['id']; ?>"
+       onclick="return confirm('هل أنت متأكد من حذف هذا التلميذ؟');">
+       🗑 حذف
+    </a>
+</td>
 </tr>
 
 <?php endforeach; ?>
