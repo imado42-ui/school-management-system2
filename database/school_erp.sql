@@ -50,12 +50,9 @@ CREATE TABLE subjects (
 
 CREATE TABLE marks (
     id INT AUTO_INCREMENT PRIMARY KEY,
-
     student_id INT NOT NULL,
     subject_id INT NOT NULL,
-
     semester ENUM('الفصل الأول','الفصل الثاني','الفصل الثالث') NOT NULL,
-
     mark DECIMAL(4,2) NOT NULL,
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -63,7 +60,6 @@ CREATE TABLE marks (
     FOREIGN KEY (student_id)
         REFERENCES students(id)
         ON DELETE CASCADE,
-
     FOREIGN KEY (subject_id)
         REFERENCES subjects(id)
         ON DELETE CASCADE
