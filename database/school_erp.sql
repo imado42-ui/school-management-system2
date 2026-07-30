@@ -6,35 +6,30 @@ CREATE TABLE users (
     role ENUM('admin','teacher') DEFAULT 'admin',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-CREATE TABLE students (
-    id INT AUTO_INCREMENT PRIMARY KEY,
 
-    firstname VARCHAR(100) NOT NULL,
-    lastname VARCHAR(100) NOT NULL,
-
-    gender ENUM('ذكر','أنثى'),
-
-    birthdate DATE,
-
-    class_id INT NOT NULL,
-
-    phone VARCHAR(20),
-
-    address TEXT,
-
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT fk_student_class
-    FOREIGN KEY (class_id)
-    REFERENCES classes(id)
-    ON DELETE RESTRICT
-    ON UPDATE CASCADE
-);
 CREATE TABLE classes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     class_name VARCHAR(100) NOT NULL,
     level VARCHAR(100) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE students (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    firstname VARCHAR(100) NOT NULL,
+    lastname VARCHAR(100) NOT NULL,
+    gender ENUM('ذكر','أنثى'),
+    birthdate DATE,
+    class_id INT NOT NULL,
+    phone VARCHAR(20),
+    address TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_student_class
+        FOREIGN KEY (class_id)
+        REFERENCES classes(id)
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT
 );
 
 CREATE TABLE teachers (
