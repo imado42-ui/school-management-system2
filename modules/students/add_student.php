@@ -3,15 +3,17 @@ require_once "../../config/database.php";
 require_once "../../includes/auth.php";
 require_once "../../includes/header.php";
 
-if (isset($_POST['save'])) {
+$classes = $pdo->query("SELECT * FROM classes ORDER BY class_name")->fetchAll(PDO::FETCH_ASSOC);
+
+if(isset($_POST['save'])){
 
     $firstname = $_POST['firstname'];
-    $lastname  = $_POST['lastname'];
-    $gender    = $_POST['gender'];
+    $lastname = $_POST['lastname'];
+    $gender = $_POST['gender'];
     $birthdate = $_POST['birthdate'];
-    $class     = $_POST['class'];
-    $phone     = $_POST['phone'];
-    $address   = $_POST['address'];
+    $class = $_POST['class'];
+    $phone = $_POST['phone'];
+    $address = $_POST['address'];
 
     $stmt = $pdo->prepare("
         INSERT INTO students
@@ -29,39 +31,55 @@ if (isset($_POST['save'])) {
         $address
     ]);
 
-    echo "<p style='color:green'>تمت إضافة التلميذ بنجاح.</p>";
+    header("Location: students.php");
+    exit;
 }
 ?>
 
 <h2>إضافة تلميذ</h2>
 
-<form method="POST">
+<form method="post">
 
-الاسم:<br>
-<input type="text" name="firstname" required><br><br>
+<p>الاسم</p>
+<input type="text" name="firstname" required>
 
-اللقب:<br>
-<input type="text" name="lastname" required><br><br>
+<p>اللقب</p>
+<input type="text" name="lastname" required>
 
-الجنس:<br>
+<p>الجنس</p>
 <select name="gender">
     <option value="ذكر">ذكر</option>
     <option value="أنثى">أنثى</option>
-</select><br><br>
+</select>
 
-تاريخ الميلاد:<br>
-<input type="date" name="birthdate"><br><br>
+<p>تاريخ الميلاد</p>
+<input type="date" name="birthdate">
 
-القسم:<br>
-<input type="text" name="class"><br><br>
+<p>القسم</p>
+<select name="class" required>
+    <option value="">اختر القسم</option>
 
-رقم الهاتف:<br>
-<input type="text" name="phone"><br><br>
+    <?php foreach($classes as $row): ?>
 
-العنوان:<br>
-<textarea name="address"></textarea><br><br>
+        <option value="<?= $row['class_name']; ?>">
+            <?= $row['class_name']; ?> - <?= $row['level']; ?>
+        </option>
 
-<button type="submit" name="save">حفظ</button>
+    <?php endforeach; ?>
+
+</select>
+
+<p>رقم الهاتف</p>
+<input type="text" name="phone">
+
+<p>العنوان</p>
+<textarea name="address"></textarea>
+
+<br><br>
+
+<button type="submit" name="save">
+💾 حفظ التلميذ
+</button>
 
 </form>
 
