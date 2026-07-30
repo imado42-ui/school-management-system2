@@ -22,6 +22,7 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <th>الجنس</th>
     <th>القسم</th>
     <th>الهاتف</th>
+    <th>الإجراءات</th>
 </tr>
 
 <?php foreach($students as $student): ?>
@@ -33,6 +34,9 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <td><?= $student['gender']; ?></td>
     <td><?= $student['class']; ?></td>
     <td><?= $student['phone']; ?></td>
+    <td>
+        <a href="edit_student.php?id=<?= $student['id']; ?>">✏️ تعديل</a>
+    </td>
 </tr>
 
 <?php endforeach; ?>
