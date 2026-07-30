@@ -1,26 +1,56 @@
 <?php
 session_start();
+require_once "config/database.php";
 
-if(isset($_SESSION['user'])){
-    header("Location: dashboard.php");
-    exit;
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $username = $_POST["username"];
+    $password = $_POST["password"];
+
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE username=?");
+    $stmt->execute([$username]);
+
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($user && password_verify($password, $user["password"])) {
+
+        $_SESSION["user"] = $user;
+
+        header("Location: dashboard.php");
+        exit;
+
+    } else {
+        $error = "اسم المستخدم أو كلمة المرور غير صحيحة";
+    }
 }
-
-include "includes/header.php";
 ?>
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>تسجيل الدخول</title>
+</head>
+
+<body>
 
 <h2>تسجيل الدخول</h2>
 
-<form action="index.php" method="POST">
-    <label>اسم المستخدم</label><br>
-    <input type="text" name="username" required><br><br>
+<?php
+if(isset($error)){
+    echo "<p style='color:red'>$error</p>";
+}
+?>
 
-    <label>كلمة المرور</label><br>
-    <input type="password" name="password" required><br><br>
+<form method="POST">
 
-    <button type="submit">دخول</button>
+<input type="text" name="username" placeholder="اسم المستخدم" required><br><br>
+
+<input type="password" name="password" placeholder="كلمة المرور" required><br><br>
+
+<button type="submit">دخول</button>
+
 </form>
 
-<?php
-include "includes/footer.php";
-?>
+</body>
+</html>
