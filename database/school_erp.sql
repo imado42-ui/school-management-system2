@@ -50,44 +50,83 @@ CREATE TABLE students (
 -- ==========================
 -- جدول الأساتذة
 -- ==========================
-
 CREATE TABLE teachers (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    full_name VARCHAR(150
-CREATE TABLE timetable (
+    full_name VARCHAR(150) NOT NULL,
+    specialty VARCHAR(150) NOT NULL,
+    phone VARCHAR(30),
+    email VARCHAR(150),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ==========================
+-- جدول المواد
+-- ==========================
+CREATE TABLE subjects (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    subject_name VARCHAR(150) NOT NULL,
+    coefficient INT DEFAULT 1,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ==========================
+-- جدول العلامات
+-- ==========================
+CREATE TABLE marks (
     id INT AUTO_INCREMENT PRIMARY KEY,
 
-    class_id INT NOT NULL,
+    student_id INT NOT NULL,
     subject_id INT NOT NULL,
-    teacher_id INT NOT NULL,
 
-    day_of_week ENUM(
-        'الأحد',
-        'الإثنين',
-        'الثلاثاء',
-        'الأربعاء',
-        'الخميس'
-    ) NOT NULL,
+    semester ENUM('الفصل الأول','الفصل الثاني','الفصل الثالث') NOT NULL,
 
-    lesson_time VARCHAR(30) NOT NULL,
+    mark DECIMAL(4,2) NOT NULL,
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT fk_timetable_class
-        FOREIGN KEY (class_id)
-        REFERENCES classes(id)
+    CONSTRAINT fk_mark_student
+        FOREIGN KEY (student_id)
+        REFERENCES students(id)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
 
-    CONSTRAINT fk_timetable_subject
+    CONSTRAINT fk_mark_subject
         FOREIGN KEY (subject_id)
         REFERENCES subjects(id)
         ON DELETE CASCADE
-        ON UPDATE CASCADE,
+        ON UPDATE CASCADE
+);
 
-    CONSTRAINT fk_timetable_teacher
-        FOREIGN KEY (teacher_id)
-        REFERENCES teachers(id)
+-- ==========================
+-- جدول الحضور
+-- ==========================
+CREATE TABLE attendance (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    student_id INT NOT NULL,
+
+    attendance_date DATE NOT NULL,
+
+    status ENUM('حاضر','غائب','متأخر') NOT NULL,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_attendance_student
+        FOREIGN KEY (student_id)
+        REFERENCES students(id)
         ON DELETE CASCADE
         ON UPDATE CASCADE
+);
+
+-- ==========================
+-- حساب المدير الافتراضي
+-- اسم المستخدم: admin
+-- كلمة المرور: admin123
+-- ==========================
+INSERT INTO users (username,password,fullname,role)
+VALUES (
+'admin',
+'$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+'Administrator',
+'admin'
 );
