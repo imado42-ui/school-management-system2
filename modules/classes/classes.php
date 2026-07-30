@@ -7,7 +7,7 @@ $stmt = $pdo->query("SELECT * FROM classes ORDER BY id DESC");
 $classes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<h2>إدارة الأقسام</h2>
+<h2>📚 إدارة الأقسام</h2>
 
 <p>
     <a href="add_class.php">➕ إضافة قسم جديد</a>
@@ -22,31 +22,37 @@ $classes = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <th>الإجراءات</th>
 </tr>
 
+<?php if(count($classes) > 0): ?>
+
 <?php foreach($classes as $class): ?>
 
 <tr>
 
-<td><?= $class['id']; ?></td>
+    <td><?= $class['id']; ?></td>
 
-<td><?= $class['class_name']; ?></td>
+    <td><?= htmlspecialchars($class['class_name']); ?></td>
 
-<td><?= $class['level']; ?></td>
+    <td><?= htmlspecialchars($class['level']); ?></td>
 
-<td>
-<a href="edit_class.php?id=<?= $class['id']; ?>">✏️ تعديل</a>
-|
-<a href="delete_class.php?id=<?= $class['id']; ?>"
-onclick="return confirm('هل تريد حذف القسم؟');">
-🗑 حذف
-</a>
-</td>
+    <td>
+
+        <a href="edit_class.php?id=<?= $class['id']; ?>">
+            ✏️ تعديل
+        </a>
+
+        |
+
+        <a href="delete_class.php?id=<?= $class['id']; ?>"
+        onclick="return confirm('هل أنت متأكد من حذف هذا القسم؟');">
+
+            🗑 حذف
+
+        </a>
+
+    </td>
 
 </tr>
 
 <?php endforeach; ?>
 
-</table>
-
 <?php
-require_once "../../includes/footer.php";
-?>
