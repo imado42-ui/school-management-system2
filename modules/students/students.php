@@ -15,36 +15,37 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <table border="1" cellpadding="8" cellspacing="0">
 
-<tr>
-    <th>#</th>
-    <th>الاسم</th>
-    <th>اللقب</th>
-    <th>الجنس</th>
-    <th>القسم</th>
-    <th>الهاتف</th>
-    <th>الإجراءات</th>
-</tr>
+    <tr>
+        <th>#</th>
+        <th>الاسم</th>
+        <th>اللقب</th>
+        <th>الجنس</th>
+        <th>القسم</th>
+        <th>الهاتف</th>
+        <th>الإجراءات</th>
+    </tr>
 
-<?php foreach($students as $student): ?>
+    <?php foreach($students as $student): ?>
 
-<tr>
-    <td><?= $student['id']; ?></td>
-    <td><?= $student['firstname']; ?></td>
-    <td><?= $student['lastname']; ?></td>
-    <td><?= $student['gender']; ?></td>
-    <td><?= $student['class']; ?></td>
-    <td><?= $student['phone']; ?></td>
-    <td>
-    <a href="edit_student.php?id=<?= $student['id']; ?>">✏️ تعديل</a>
-    |
-    <a href="delete_student.php?id=<?= $student['id']; ?>"
-       onclick="return confirm('هل أنت متأكد من حذف هذا التلميذ؟');">
-       🗑 حذف
-    </a>
-</td>
-</tr>
+    <tr>
+        <td><?= $student['id']; ?></td>
+        <td><?= $student['firstname']; ?></td>
+        <td><?= $student['lastname']; ?></td>
+        <td><?= $student['gender']; ?></td>
+        <td><?= $student['class']; ?></td>
+        <td><?= $student['phone']; ?></td>
 
-<?php endforeach; ?>
+        <td>
+            <a href="edit_student.php?id=<?= $student['id']; ?>">✏️ تعديل</a>
+            |
+            <a href="delete_student.php?id=<?= $student['id']; ?>"
+               onclick="return confirm('هل أنت متأكد من حذف هذا التلميذ؟');">
+               🗑 حذف
+            </a>
+        </td>
+    </tr>
+
+    <?php endforeach; ?>
 
 </table>
 
