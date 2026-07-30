@@ -3,40 +3,101 @@ require_once "../../config/database.php";
 require_once "../../includes/auth.php";
 require_once "../../includes/header.php";
 
-$stmt = $pdo->query("
+$search = "";
+
+if(isset($_GET['search'])){
+    $search = trim($_GET['search']);
+}
+
+$stmt = $pdo->prepare("
 SELECT
-    students.id,
-    students.firstname,
-    students.lastname,
-    students.gender,
-    students.phone,
-    classes.class_name
+students.id,
+students.firstname,
+students.lastname,
+students.gender,
+students.phone,
+classes.class_name
 FROM students
 LEFT JOIN classes
 ON students.class_id = classes.id
-ORDER BY students.id DESC
+
+WHERE
+students.firstname LIKE ?
+OR students.lastname LIKE ?
+
+ORDER BY students.lastname ASC
 ");
+
+$stmt->execute([
+"%$search%",
+"%$search%"
+]);
 
 $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<h2>قائمة التلاميذ</h2>
+<h2 class="mb-4">إدارة التلاميذ</h2>
+
+<form method="GET" class="mb-3">
+
+<div class="input-group">
+
+<input
+type="text"
+class="form-control"
+name="search"
+placeholder="ابحث باسم التلميذ..."
+value="<?= htmlspecialchars($search) ?>">
+
+<button class="btn btn-primary">
+بحث
+</button>
+
+<a href="students.php"
+class="btn btn-secondary">
+إلغاء
+</a>
+
+</div>
+
+</form>
 
 <p>
-    <a href="add_student.php">➕ إضافة تلميذ</a>
+
+<a href="add_student.php"
+class="btn btn-success">
+
+➕ إضافة تلميذ
+
+</a>
+
 </p>
 
-<table border="1" cellpadding="8" cellspacing="0" width="100%">
+<table class="table table-bordered table-striped">
+
+<thead class="table-dark">
 
 <tr>
-    <th>#</th>
-    <th>الاسم</th>
-    <th>اللقب</th>
-    <th>الجنس</th>
-    <th>القسم</th>
-    <th>الهاتف</th>
-    <th>الإجراءات</th>
+
+<th>#</th>
+
+<th>الاسم</th>
+
+<th>اللقب</th>
+
+<th>الجنس</th>
+
+<th>القسم</th>
+
+<th>الهاتف</th>
+
+<th>الإجراءات</th>
+
 </tr>
+
+</thead>
+
+<tbody>
 
 <?php foreach($students as $student): ?>
 
@@ -56,25 +117,10 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <td>
 
-<a href="edit_student.php?id=<?= $student['id']; ?>">✏️ تعديل</a>
-
-|
-
-<a href="delete_student.php?id=<?= $student['id']; ?>"
-onclick="return confirm('هل تريد حذف هذا التلميذ؟');">
-
-🗑 حذف
-
+<a class="btn btn-warning btn-sm"
+href="edit_student.php?id=<?= $student['id']; ?>">
+تعديل
 </a>
 
-</td>
-
-</tr>
-
-<?php endforeach; ?>
-
-</table>
-
-<?php
-require_once "../../includes/footer.php";
-?>
+<a class="btn btn-danger btn-sm"
+href="delete_student.php?id
