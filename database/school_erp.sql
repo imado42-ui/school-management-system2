@@ -8,14 +8,27 @@ CREATE TABLE users (
 );
 CREATE TABLE students (
     id INT AUTO_INCREMENT PRIMARY KEY,
+
     firstname VARCHAR(100) NOT NULL,
     lastname VARCHAR(100) NOT NULL,
+
     gender ENUM('ذكر','أنثى'),
+
     birthdate DATE,
-    class VARCHAR(50),
+
+    class_id INT NOT NULL,
+
     phone VARCHAR(20),
+
     address TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_student_class
+    FOREIGN KEY (class_id)
+    REFERENCES classes(id)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE
 );
 CREATE TABLE classes (
     id INT AUTO_INCREMENT PRIMARY KEY,
