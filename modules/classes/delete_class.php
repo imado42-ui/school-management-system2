@@ -7,10 +7,11 @@ if (!isset($_GET['id'])) {
     exit;
 }
 
-$id = (int)$_GET['id'];
+$id = (int) $_GET['id'];
 
-$stmt = $pdo->prepare("DELETE FROM classes WHERE id=?");
+$stmt = $pdo->prepare("DELETE FROM classes WHERE id = ?");
 $stmt->execute([$id]);
 
 header("Location: classes.php");
 exit;
+?>
