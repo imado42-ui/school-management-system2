@@ -50,6 +50,44 @@ CREATE TABLE students (
 -- ==========================
 -- جدول الأساتذة
 -- ==========================
+
 CREATE TABLE teachers (
     id INT AUTO_INCREMENT PRIMARY KEY,
     full_name VARCHAR(150
+CREATE TABLE timetable (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    class_id INT NOT NULL,
+    subject_id INT NOT NULL,
+    teacher_id INT NOT NULL,
+
+    day_of_week ENUM(
+        'الأحد',
+        'الإثنين',
+        'الثلاثاء',
+        'الأربعاء',
+        'الخميس'
+    ) NOT NULL,
+
+    lesson_time VARCHAR(30) NOT NULL,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_timetable_class
+        FOREIGN KEY (class_id)
+        REFERENCES classes(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT fk_timetable_subject
+        FOREIGN KEY (subject_id)
+        REFERENCES subjects(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT fk_timetable_teacher
+        FOREIGN KEY (teacher_id)
+        REFERENCES teachers(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
