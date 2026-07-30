@@ -1,8 +1,6 @@
-</main>
+</div>
 
-<footer style="text-align:center;padding:15px;margin-top:30px;background:#f5f5f5;">
-    <p>&copy; <?php echo date("Y"); ?> School Management System</p>
-</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
